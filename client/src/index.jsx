@@ -12,13 +12,27 @@ class App extends React.Component {
       movies: [{deway: "movies"}],
       favorites: [{deway: "favorites"}],
       showFaves: false,
+      genres: []
     };
     
     // you might have to do something important here!
+    this.getMovies.bind(this);
+    // this.saveMovies.bind(this);
+    // this.deleteMovie.bind(this);
+    // this.swapFavorites.bind(this);
+  }
+  componentDidMount(){
+    $.get('/genres', res => {
+      console.log('res in did mount', res);
+      this.setState({genres: res})
+    }, 'json');
   }
 
   getMovies() {
     // make an axios request to your server on the GET SEARCH endpoint
+    $.get('/search', res => {
+      console.log('res inside getMovies', res)
+    })
   }
 
   saveMovie() {
@@ -42,7 +56,7 @@ class App extends React.Component {
         <header className="navbar"><h1>Bad Movies</h1></header> 
         
         <div className="main">
-          <Search swapFavorites={this.swapFavorites} showFaves={this.state.showFaves}/>
+          <Search swapFavorites={this.swapFavorites} showFaves={this.state.showFaves} genres={this.state.genres} getMovies={this.getMovies}/>
           <Movies movies={this.state.showFaves ? this.state.favorites : this.state.movies} showFaves={this.state.showFaves}/>
         </div>
       </div>
